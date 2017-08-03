@@ -3,12 +3,13 @@ import {Field, reduxForm} from 'redux-form' //enables connection
 
 class PostsNew extends React.Component {
 
-  renderTitleField(field, a){
+  renderField(field){
     return(
-      <div>
+      <div className="form-group">
+        <label>{field.label}</label>
         <input
+          className="form-control"
           type="text"
-          placeholder="Title"
           {...field.input}
         />
       </div>
@@ -22,8 +23,19 @@ class PostsNew extends React.Component {
 
       <form>
         <Field
+          label="Title for post"
           name="title"
-          component={this.renderTitleField}
+          component={this.renderField}
+        />
+        <Field
+          label="Categories"
+          name="title"
+          component={this.renderField}
+        />
+        <Field
+          label="Post Content"
+          name="title"
+          component={this.renderField}
         />
       </form>
 
