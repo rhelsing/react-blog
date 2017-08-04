@@ -19,8 +19,10 @@ export default function(state = {}, action) {
   case CREATE_POST:
     return 'ok'
   case DELETE_POST:
-    const newState = {...state}
-    newState[action.payload.data] = null
+    //OLD WAY
+    // const newState = {...state}
+    // newState[action.payload.data] = null
+    return _.omit(state, action.payload.data)
     return newState
   default:
     return state
