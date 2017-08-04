@@ -16,7 +16,7 @@ class PostIndex extends Component {
     //obj doesnt have map
     return _.map(this.props.posts, p => {
       return (
-        <li className="list-group-item" key={p.id}>
+        <li className="list-group-item" key={p.id+p.title}>
           {p.title}
         </li>
       )

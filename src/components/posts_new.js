@@ -1,5 +1,8 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form' //enables connection
+import {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends React.Component {
 
@@ -23,14 +26,18 @@ class PostsNew extends React.Component {
   }
 
   renderTextarea(field){
+
+    const { meta: { touched, error} } = field //grab meta from field, and touched and error
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`
+
     return(
-      <div className="form-group">
+      <div className={className}>
         <label>{field.label}</label>
-        <textarea style={{height: '200px'}}
+        <textarea style={{height: '100px'}}
           className="form-control"
           {...field.input}
         ></textarea>
-        {field.meta.errors}
+        <span style={{color: 'red'}}>{touched? error : ''}</span>
       </div>
     )
   }
@@ -38,6 +45,10 @@ class PostsNew extends React.Component {
   //called when redux form says it's valid, wired up to redux in form onSubmit
   onSubmit(values){
     console.log(values)
+    //give callback
+    this.props.createPost(values, () => {
+      this.props.history.push("/")// - how to navigate programatically, react-router provides
+    })
   }
 
   render() {
@@ -61,9 +72,10 @@ class PostsNew extends React.Component {
         <Field
           label="Post Content"
           name="content"
-          component={this.renderField}
+          component={this.renderTextarea}
         />
         <button type="submit" className="btn btn-primary">Submit</button>
+        <Link className="btn" to="/">Cancel</Link>
       </form>
 
       </div>
@@ -91,8 +103,12 @@ function validate(values) {
 
 }
 
+
 //form: name of form, unique across components
+//HOW TO COMBINE CONNECT ACTION w/ REDUX FORM
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew)
+})(
+  connect(null, {createPost})(PostsNew)
+)
