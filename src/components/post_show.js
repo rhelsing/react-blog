@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import { fetchPost } from '../actions'
+import { Link } from 'react-router-dom'
+import { fetchPost, deletePost } from '../actions'
 
 class PostShow extends React.Component {
 
@@ -8,6 +9,13 @@ class PostShow extends React.Component {
     //get the post id from url, send to action, reduce will bring it back
     const { id } = this.props.match.params
     return this.props.fetchPost(id)
+  }
+
+  onDeleteClick(){
+    const { id } = this.props.match.params
+    this.props.deletePost(id, () => {
+      this.props.history.push("/")
+    })
   }
 
   render() {
@@ -19,6 +27,11 @@ class PostShow extends React.Component {
 
     return (
       <div>
+      <Link to="/">Back</Link>
+      <button
+        className="btn btn-danger pull-xs-right"
+        onClick={this.onDeleteClick.bind(this)}
+        >Delete</button>
       <h3>{this.props.post.title}</h3>
       <div>Categeories: {this.props.post.categories}</div>
       <div>{this.props.post.content}</div>
@@ -36,6 +49,6 @@ function mapStateToProps({ posts }, ownProps){ //destructure state, also get pro
 
 }
 
-export default connect(mapStateToProps, {fetchPost})(PostShow)
+export default connect(mapStateToProps, {fetchPost, deletePost})(PostShow)
 
 //if function doesnt exist, check naming and check that passed to connect w/ {}

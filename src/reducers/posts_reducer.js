@@ -1,4 +1,4 @@
-import { FETCH_POSTS, CREATE_POST, FETCH_POST } from '../actions' //index not needed?
+import { FETCH_POSTS, CREATE_POST, FETCH_POST, DELETE_POST } from '../actions' //index not needed?
 import _ from 'lodash';
 
 export default function(state = {}, action) {
@@ -18,6 +18,10 @@ export default function(state = {}, action) {
     return  {...state, [data.id]: data}
   case CREATE_POST:
     return 'ok'
+  case DELETE_POST:
+    const newState = {...state}
+    newState[action.payload.data] = null
+    return newState
   default:
     return state
   }
