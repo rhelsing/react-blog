@@ -14,8 +14,8 @@ export default function(state = {}, action) {
     // newState[post.id] = post
     // return newState
     //NEW WAY:
-    const {payload: {data}} = action //rip data out
-    return  {...state, [data.id]: data}
+    const {payload: {data}} = action //rip (destructure) data out
+    return  {...state, [data.id]: data}//perk of obj as state
   case CREATE_POST:
     return 'ok'
   case DELETE_POST:

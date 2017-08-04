@@ -27,7 +27,6 @@ class PostShow extends React.Component {
 
     return (
       <div>
-      <Link to="/">Back</Link>
       <button
         className="btn btn-danger pull-xs-right"
         onClick={this.onDeleteClick.bind(this)}
@@ -35,6 +34,7 @@ class PostShow extends React.Component {
       <h3>{this.props.post.title}</h3>
       <div>Categeories: {this.props.post.categories}</div>
       <div>{this.props.post.content}</div>
+      <Link to="/">Back</Link>
       </div>
     );
   }
