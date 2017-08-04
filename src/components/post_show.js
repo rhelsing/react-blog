@@ -31,6 +31,10 @@ class PostShow extends React.Component {
         className="btn btn-danger pull-xs-right"
         onClick={this.onDeleteClick.bind(this)}
         >Delete</button>
+      <Link
+        className="btn btn-secondary pull-xs-right"
+        to={`/edit_post/${this.props.match.params.id}`}
+        >Edit</Link>
       <h3>{this.props.post.title}</h3>
       <div>Categeories: {this.props.post.categories}</div>
       <div>{this.props.post.content}</div>
