@@ -15,9 +15,10 @@ class PostIndex extends Component {
   renderPosts(){
     //obj doesnt have map
     return _.map(this.props.posts, p => {
+      const url = `/posts/${p.id}`
       return (
         <li className="list-group-item" key={p.id+p.title}>
-          {p.title}
+          <Link to={url}>{p.title}</Link>
         </li>
       )
     })
