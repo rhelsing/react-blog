@@ -50,9 +50,9 @@ class PostsEdit extends React.Component {
 
   //called when redux form says it's valid, wired up to redux in form onSubmit
   onSubmit(values){
-    console.log(values)
     //give callback
-    this.props.updatePost(values, () => {
+    const { id } = this.props.match.params
+    this.props.updatePost(id ,values, () => {
       this.props.history.push("/")// - how to navigate programatically, react-router provides
     })
   }

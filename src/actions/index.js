@@ -3,6 +3,7 @@ import axios from 'axios'
 export const FETCH_POSTS = 'FETCH_POSTS'
 export const FETCH_POST = 'FETCH_POST'
 export const CREATE_POST = 'CREATE_POST'
+export const UPDATE_POST = 'UPDATE_POST'
 export const DELETE_POST = 'CREATE_POST'
 
 const ROOT_URL = 'http://reduxblog.herokuapp.com/api'
@@ -26,12 +27,14 @@ export function createPost(values, callback){
   }
 }
 
-export function updatePost(values, callback){
+export function updatePost(id, values, callback){
+
+  //not supported, create new and delete old
   const request = axios.post(`${ROOT_URL}/posts${API_KEY}`, values)
-  .then(() => callback()) //values from form.. json as second param + callback as promise
-  //not doing anything with this.. but could load into our state without making another index request
+  .then(() => axios.delete(`${ROOT_URL}/posts/${id}${API_KEY}`))
+  .then(() => callback())
   return {
-    type: CREATE_POST,
+    type: UPDATE_POST,
     payload: request
   }
 }
