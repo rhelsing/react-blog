@@ -1,10 +1,16 @@
 import React from 'react';
-import {Field, reduxForm} from 'redux-form' //enables connection
+import {Field, reduxForm, formValueSelector} from 'redux-form' //enables connection
 import {Link} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updatePost } from '../actions';
+import { updatePost, fetchPost } from '../actions';
 
 class PostsEdit extends React.Component {
+
+  componentDidMount() {
+    //get the post id from url, send to action, reduce will bring it back
+    const { id } = this.props.match.params
+    return this.props.fetchPost(id) //call action, reducer mapState should recieve
+  }
 
   renderField(field){
 
@@ -55,9 +61,13 @@ class PostsEdit extends React.Component {
 
     const { handleSubmit } = this.props //pull from props, redux form provides
 
+    if (!this.props.post){
+      return <div>Loading...</div>
+    }
+
     return (
       <div>
-      <h3>Editing post:</h3>
+      <h3>Editing post: {this.props.currentValues.title}</h3>
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           label="Title for post"
@@ -102,12 +112,29 @@ function validate(values) {
 
 }
 
+function mapStateToProps(state, ownProps){
+  const { id } = ownProps.match.params
+  return {
+    post: state.posts[id],
+    initialValues: state.posts[id],
+    currentValues: formValueSelector('PostsUpdateForm')(state, 'title', 'categories', 'content')
+  } //NEED INITIAL VALUES, GET CURRENT VALUES TOO.. NEED IMPORT ABOVE TOO
+}
+
 
 //form: name of form, unique across components
 //HOW TO COMBINE CONNECT ACTION w/ REDUX FORM
-export default reduxForm({
+//THIS WORKED ON CREATE, NOT UPDATE
+// export default reduxForm({
+//   validate,
+//   form: 'PostsUpdateForm',
+//   enableReinitialize : true
+// })(
+//   connect(mapStateToProps, {updatePost, fetchPost})(PostsEdit)
+// )
+//THIS WORKS ON UPDATE TO BRING VALUES IN
+export default connect(mapStateToProps, {updatePost, fetchPost})(
+  reduxForm({
   validate,
-  form: 'PostsUpdateForm'
-})(
-  connect(null, {updatePost})(PostsEdit)
-)
+  form: 'PostsUpdateForm' //, enableReinitialize : true //NOT NEEDED
+})(PostsEdit))
